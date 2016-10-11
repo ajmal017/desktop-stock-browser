@@ -8,7 +8,7 @@ require('babel-polyfill');
 const os = require('os');
 const webpack = require('webpack');
 const electronCfg = require('./webpack.config.electron');
-const cfg = require('./webpack.config.production');
+const cfg = require('./webpack/webpack.config.production');
 const packager = require('electron-packager');
 const del = require('del');
 const exec = require('child_process').exec;

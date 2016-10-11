@@ -2,13 +2,12 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './containers/App';
-import HomePage from './containers/HomePage';
-import CounterPage from './containers/CounterPage';
-
+import Main from './containers/MainScreen';
+import StockScreen from './containers/StockScreen';
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="/counter" component={CounterPage} />
+    <IndexRoute component={Main} />
+    <Route path="/stock/:symbol" component={StockScreen} />
   </Route>
 );

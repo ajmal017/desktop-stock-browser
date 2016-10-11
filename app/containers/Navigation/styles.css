@@ -1,0 +1,101 @@
+.appNavigation {
+  display: flex;
+  max-height: 50px;
+  flex: 1;
+  -webkit-app-region: no-drag;
+  background-color: #262931;
+  font-family: "DIN", sans-serif;
+}
+
+.appNavigation__container {
+  flex: 2.5;
+  border-left: 1px solid #1E1F29;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 20px;
+}
+
+.appNavigation__containerSection {
+  display: flex;
+  justify-content: center;
+}
+
+.appNavigation__containerBranding {
+  color: white;
+  font-weight: 300;
+  font-size: 16px;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.appNavigation__search {
+  flex: 1;
+  display: flex;
+  -webkit-app-region: no-drag;
+}
+
+.appNavigation__searchInput {
+  height: 100%;
+  background-color: #1E1F29;
+  color: white;
+  flex: 3;
+  font-weight: 100;
+  padding: 10px;
+  font-size: 14px;
+  position: relative;
+  max-width: 300px;
+  font-family: 'DIN', sans-serif;
+}
+
+.appNavigation__searchInput:focus {
+  outline :0;
+}
+
+.appNavigation__searchButton {
+  background-color: #1E1F29;
+  color: white;
+  min-width: 60px;
+  flex: 0.5;
+}
+
+.appNavigation__searchResults {
+  position: absolute;
+  width: 300px;
+  top: 50px;
+  background-color: white;
+  border: 1px solid #EEE;
+  box-shadow: 0 0 0 1px rgba(39,44,48,0.05),0 2px 7px 1px rgba(39,44,48,0.16);
+}
+
+.appNavigation__searchResultsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.appNavigation__searchResultsItem {
+  padding: 10px;
+  max-width: 300px;
+  display: flex;
+  align-content: space-around;
+  font-weight: 300;
+}
+
+.appNavigation__searchResultsItem:hover {
+  background-color: rgba(0,0,0,.03);
+}
+
+.appNavigation__searchResultsItemName {
+  font-size: 14px;
+  flex: 1;
+  font-weight: 500;
+}
+
+.appNavigation__searchResultsItemExchange {
+  font-size: 12px;
+  flex: 1;
+  text-align: right;
+}
