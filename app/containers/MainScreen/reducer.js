@@ -3,12 +3,14 @@ import {
   FETCH_STOCK_DATA,
   CHANGE_SEARCH_QUERY,
   PUT_SEARCH_RESULTS,
+  VIEW_STOCK_DATA_SCREEN,
 } from './constants';
 
 const initalState = fromJS({
   searchQuery: '',
+  searchResults: [],
   isLoadingSearchResults: false,
-  searchResults: []
+  stockDataParams: false,
 });
 
 export default function dataFetcherReducer(state = initalState, action) {
@@ -22,7 +24,9 @@ export default function dataFetcherReducer(state = initalState, action) {
     case PUT_SEARCH_RESULTS:
       return state
         .set('isLoadingSearchResults', false)
-        .set('searchResults', fromJS(action.payload.ResultSet.Result));
+        .set('searchResults', fromJS(action.payload));
+    case VIEW_STOCK_DATA_SCREEN:
+      return state.set('stockDataParams', action.payload);
     default:
       return state;
   }

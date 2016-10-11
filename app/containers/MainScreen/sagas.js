@@ -19,10 +19,11 @@ import {
 } from '../../utils/parser';
 import {
   putSearchResults,
+  viewStockDataScreen,
 } from './actions';
 
-function* fetchStockData(stockSymbol) {
-  const googleData = yield call(request, 'GET', {}, googleLookup('NASDAQ', stockSymbol));
+function* fetchStockData({ stockSymbol, stockExch }) {
+  const googleData = yield call(request, 'GET', {}, googleLookup(stockExch, stockSymbol));
   const yahooData = yield call(request, 'GET', {}, yahooLookup(stockSymbol));
   const parsedGoogleData = yield call(parseGoogleData, googleData.data);
   const parsedYahooData = yield call(parseYahooData, yahooData.data);
@@ -41,10 +42,10 @@ function* viewStockData({ payload }) {
   /*
   Takes seleced stock from search/ favourites/ portfolio and views it using react router and state
   */
-  yield put(push({
-    pathname: `/stock/${payload.symbol}:${payload.exchDisp}`,
-    state: payload,
-  }));
+  yield put(viewStockDataScreen(payload));
+  if (payload) {
+    yield put(push('/stock'));
+  }
 }
 
 function* stockDataLoop() {

@@ -8,6 +8,6 @@ import StockScreen from './containers/StockScreen';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Main} />
-    <Route path="/stock/:symbol" component={StockScreen} />
+    <Route path="/stock" component={StockScreen} />
   </Route>
 );

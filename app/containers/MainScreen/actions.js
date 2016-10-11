@@ -3,7 +3,15 @@ import {
   CHANGE_SEARCH_QUERY,
   PUT_SEARCH_RESULTS,
   VIEW_STOCK_DATA,
+  VIEW_STOCK_DATA_SCREEN,
 } from './constants';
+
+function viewStockDataScreen(state) {
+  return {
+    type: VIEW_STOCK_DATA_SCREEN,
+    payload: state,
+  };
+}
 
 function viewStockData(stockDataParams) {
   return {
@@ -19,10 +27,13 @@ function putSearchResults(searchResults) {
   };
 }
 
-function fetchStockData(symbol) {
+function fetchStockData(symbol, exch) {
   return {
     type: FETCH_STOCK_DATA,
-    payload: symbol,
+    payload: {
+      stockSymbol: symbol,
+      stockExch: exch,
+    },
   };
 }
 
@@ -38,5 +49,6 @@ export default {
   changeSearchQuery,
   putSearchResults,
   viewStockData,
+  viewStockDataScreen,
 };
 

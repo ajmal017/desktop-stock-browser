@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { push } from 'react-router-redux';
 import styles from './styles.css';
 import AppControls from '../../components/AppControls';
 import {
@@ -10,10 +11,9 @@ import {
 import {
   selectSearchQuery,
   selectSearchResults,
+  selectStockParams,
+  selectShouldRenderBack,
 } from '../MainScreen/selectors';
-import {
-  selectRouteState,
-} from '../App/selectors';
 
 class Navigation extends React.Component {
   constructor() {
@@ -93,7 +93,7 @@ class Navigation extends React.Component {
 
   renderTitle() {
     let titleToBeRendered;
-    const routingDataState = this.props.routingData.get('state');
+    const routingDataState = this.props.stockViewParams;
 
 
     if (routingDataState) {
@@ -102,15 +102,18 @@ class Navigation extends React.Component {
           className={styles.appNavigation__containerBranding}
         >
           <span className={styles.appNavigation__containerBrandingExchDisp}>
-            {routingDataState.get('exchDisp')}
+            {routingDataState.exchDisp}
           </span>
-          {routingDataState.get('name')}
+          {routingDataState.name}
         </p>);
     } else {
       titleToBeRendered = (<p
         className={styles.appNavigation__containerBranding}
+        style={{
+          marginLeft: 10,
+        }}
       >
-        {titleToBeRendered}
+        Watchtower
       </p>);
     }
 
@@ -129,6 +132,20 @@ class Navigation extends React.Component {
       >
         <AppControls />
         <div className={styles.appNavigation__container}>
+          <button
+            onClick={() => this.props.returnToHome()}
+            style={{
+              display: this.props.shouldRenderBack ? 'block' : 'none',
+            }}
+          >
+            <i
+              className="fa fa-chevron-left"
+              style={{
+                color: 'white',
+                marginLeft: 10,
+              }}
+            />
+          </button>
           {this.renderTitle()}
         </div>
         <div className={styles.appNavigation__search}>
@@ -159,13 +176,19 @@ Navigation.propTypes = {
     React.PropTypes.array,
   ]),
   viewStockData: React.PropTypes.func,
-  routingData: React.PropTypes.object,
+  stockViewParams: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.bool,
+  ]),
+  returnToHome: React.PropTypes.func,
+  shouldRenderBack: React.PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   searchQuery: selectSearchQuery(),
   searchResults: selectSearchResults(),
-  routingData: selectRouteState(),
+  stockViewParams: selectStockParams(),
+  shouldRenderBack: selectShouldRenderBack(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -174,6 +197,10 @@ function mapDispatchToProps(dispatch) {
     viewStockData: (stockParams) => {
       dispatch(viewStockData(stockParams));
       dispatch(changeSearchQuery(stockParams.name));
+    },
+    returnToHome: () => {
+      dispatch(push('/'));
+      dispatch(viewStockData(false));
     },
   };
 }

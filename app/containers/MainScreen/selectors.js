@@ -13,7 +13,19 @@ const selectSearchResults = () => createSelector(
   (substate) => substate.get('searchResults'),
 );
 
+const selectStockParams = () => createSelector(
+  selectDataDomain(),
+  (substate) => substate.get('stockDataParams'),
+);
+
+const selectShouldRenderBack = () => createSelector(
+  selectDataDomain(),
+  (substate) => !!substate.get('stockDataParams')
+);
+
 export default {
   selectSearchQuery,
   selectSearchResults,
+  selectShouldRenderBack,
+  selectStockParams,
 };
