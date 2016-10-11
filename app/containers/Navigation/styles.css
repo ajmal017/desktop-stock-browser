@@ -99,3 +99,9 @@
   flex: 1;
   text-align: right;
 }
+
+.appNavigation__containerBrandingExchDisp {
+  margin-right: 10px;
+  font-size: 14px;
+  opacity: 0.7;
+}

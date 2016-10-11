@@ -97,18 +97,26 @@ class Navigation extends React.Component {
 
 
     if (routingDataState) {
-      titleToBeRendered = routingDataState.get('name');
+      titleToBeRendered = (
+        <p
+          className={styles.appNavigation__containerBranding}
+        >
+          <span className={styles.appNavigation__containerBrandingExchDisp}>
+            {routingDataState.get('exchDisp')}
+          </span>
+          {routingDataState.get('name')}
+        </p>);
     } else {
-      titleToBeRendered = 'Watchtower';
+      titleToBeRendered = (<p
+        className={styles.appNavigation__containerBranding}
+      >
+        {titleToBeRendered}
+      </p>);
     }
 
     return (
       <div className={styles.appNavigation__containerSection}>
-        <p
-          className={styles.appNavigation__containerBranding}
-        >
-          {titleToBeRendered}
-        </p>
+        {titleToBeRendered}
       </div>
     );
   }
@@ -163,7 +171,10 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     changeSearchQuery: (e) => dispatch(changeSearchQuery(e.target.value)),
-    viewStockData: (stockParams) => dispatch(viewStockData(stockParams)),
+    viewStockData: (stockParams) => {
+      dispatch(viewStockData(stockParams));
+      dispatch(changeSearchQuery(stockParams.name));
+    },
   };
 }
 
