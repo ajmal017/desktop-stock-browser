@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 class Main extends React.Component {
   render() {
     return (
-      <div>
-        <button> Hello</button>
-      </div>
+      <div
+        style={{
+          width: '100%',
+        }}
+      />
     );
   }
 }

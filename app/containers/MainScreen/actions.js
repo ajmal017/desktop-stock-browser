@@ -40,11 +40,17 @@ function fetchStockData(symbol, exch) {
 }
 
 function fetchStockDataSuccess(yahooData, googleData) {
+  const { series, ...rest } = yahooData;
+  const range = rest.meta.uri.match(/range=(.+)\/json/)[1];
   return {
     type: FETCH_STOCK_DATA_SUCCESS,
     payload: {
-      google: googleData,
-      yahoo: yahooData,
+      individual: {
+        google: googleData,
+        yahoo: rest,
+      },
+      chart: series,
+      range,
     },
   };
 }

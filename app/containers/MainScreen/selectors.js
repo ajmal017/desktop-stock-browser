@@ -28,10 +28,16 @@ const selectIndividualStockData = () => createSelector(
   (substate) => substate.get('individualStockData'),
 );
 
+const selectChartStockData = () => createSelector(
+  selectDataDomain(),
+  (substate) => substate.get('chartStockData'),
+);
+
 export default {
   selectSearchQuery,
   selectSearchResults,
   selectShouldRenderBack,
   selectStockParams,
+  selectChartStockData,
   selectIndividualStockData,
 };

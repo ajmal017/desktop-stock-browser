@@ -1,0 +1,12 @@
+.stockChart {
+  flex: 1;
+  display: block;
+  box-sizing: border-box;
+}
+
+.stockChart__canvas {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 20px;
+}

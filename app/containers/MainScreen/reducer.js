@@ -7,6 +7,9 @@ import {
   PUT_SEARCH_RESULTS,
   VIEW_STOCK_DATA_SCREEN,
 } from './constants';
+import {
+  parseStockRangeData,
+} from '../../utils/formatter';
 
 const initalState = fromJS({
   searchQuery: '',
@@ -15,6 +18,8 @@ const initalState = fromJS({
   isFetching: false,
   stockDataParams: false,
   individualStockData: false,
+  chartStockData: false,
+  range: false,
 });
 
 export default function dataFetcherReducer(state = initalState, action) {
@@ -28,7 +33,9 @@ export default function dataFetcherReducer(state = initalState, action) {
     case FETCH_STOCK_DATA_SUCCESS:
       return state
         .set('isFetching', false)
-        .set('individualStockData', action.payload);
+        .set('individualStockData', action.payload.individual)
+        .set('chartStockData', parseStockRangeData(action.payload.range, action.payload.chart))
+        .set('range', action.payload.range);
     case CHANGE_SEARCH_QUERY:
       return state
         .set('isFetching', true)

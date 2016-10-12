@@ -101,5 +101,6 @@
 }
 
 .stockScreenContainerChart {
-  flex: 1;
+  flex: 1.5;
+  display: flex;
 }

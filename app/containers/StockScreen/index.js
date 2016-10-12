@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectStockParams, selectIndividualStockData } from '../MainScreen/selectors';
+import StockChart from '../../components/StockChart';
+import { selectStockParams, selectIndividualStockData, selectChartStockData } from '../MainScreen/selectors';
 import { fetchStockData } from '../MainScreen/actions';
 import styles from './styles.css';
 
@@ -61,17 +62,18 @@ class StockScreen extends React.Component {
                 </p>
                 <span className={styles.headerContainer__changeAmountLabel}>DAILY CHANGE</span>
               </div>
-              <div className={styles.headerContainer__changeContainerSection}>
-                <p
-                  className={styles.headerContainer__changeAmount}
-                  style={{
-                    color: deduceColor(stockData.google.ec),
-                  }}
-                >
-                  {stockData.google.ec} ({stockData.google.ecp}%)
-                </p>
-                <span className={styles.headerContainer__changeAmountLabel}>AFTER HOURS</span>
-              </div>
+              {shouldRenderAfteHours ?
+                <div className={styles.headerContainer__changeContainerSection}>
+                  <p
+                    className={styles.headerContainer__changeAmount}
+                    style={{
+                      color: deduceColor(stockData.google.ec),
+                    }}
+                  >
+                    {stockData.google.ec} ({stockData.google.ecp}%)
+                  </p>
+                  <span className={styles.headerContainer__changeAmountLabel}>AFTER HOURS</span>
+                </div> : null}
             </div>
             <div className={styles.headerContainer__metaData}>
               <div className={styles.headerContainer__metaDataContainer}>
@@ -103,7 +105,10 @@ class StockScreen extends React.Component {
           </div>
         </div>
         <div className={styles.stockScreenContainerChart}>
-          <p>{this.props.stockData.google.t}</p>
+          <StockChart
+            data={this.props.chartData}
+            symbol={stockData.google.t}
+          />
         </div>
       </div>
     );
@@ -111,8 +116,11 @@ class StockScreen extends React.Component {
 }
 
 StockScreen.propTypes = {
-
   stockData: React.PropTypes.oneOfType([
+    React.PropTypes.object,
+    React.PropTypes.bool,
+  ]),
+  chartData: React.PropTypes.oneOfType([
     React.PropTypes.object,
     React.PropTypes.bool,
   ]),
@@ -125,6 +133,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = createStructuredSelector({
   stockParams: selectStockParams(),
   stockData: selectIndividualStockData(),
+  chartData: selectChartStockData(),
 });
 
 

@@ -109,11 +109,13 @@
     "webpack-validator": "^2.2.9"
   },
   "dependencies": {
+    "chart.js": "^2.3.0",
     "css-modules-require-hook": "^4.0.5",
     "electron-debug": "^1.0.1",
     "font-awesome": "^4.6.3",
     "postcss": "^5.2.4",
     "react": "^15.3.2",
+    "react-chartjs-2": "^1.4.0",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
