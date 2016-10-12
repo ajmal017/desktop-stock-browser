@@ -1,5 +1,7 @@
 import {
   FETCH_STOCK_DATA,
+  FETCH_STOCK_DATA_SUCCESS,
+  FETCH_STOCK_DATA_ERROR,
   CHANGE_SEARCH_QUERY,
   PUT_SEARCH_RESULTS,
   VIEW_STOCK_DATA,
@@ -37,6 +39,23 @@ function fetchStockData(symbol, exch) {
   };
 }
 
+function fetchStockDataSuccess(yahooData, googleData) {
+  return {
+    type: FETCH_STOCK_DATA_SUCCESS,
+    payload: {
+      google: googleData,
+      yahoo: yahooData,
+    },
+  };
+}
+
+function fetchStockDataError(error) {
+  return {
+    type: FETCH_STOCK_DATA_ERROR,
+    payload: error,
+  };
+}
+
 function changeSearchQuery(newQuery) {
   return {
     type: CHANGE_SEARCH_QUERY,
@@ -46,6 +65,8 @@ function changeSearchQuery(newQuery) {
 
 export default {
   fetchStockData,
+  fetchStockDataSuccess,
+  fetchStockDataError,
   changeSearchQuery,
   putSearchResults,
   viewStockData,

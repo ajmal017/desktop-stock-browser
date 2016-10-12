@@ -67,6 +67,7 @@
   top: 50px;
   background-color: white;
   border: 1px solid #EEE;
+  z-index: 2;
   box-shadow: 0 0 0 1px rgba(39,44,48,0.05),0 2px 7px 1px rgba(39,44,48,0.16);
 }
 

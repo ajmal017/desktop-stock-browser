@@ -23,9 +23,15 @@ const selectShouldRenderBack = () => createSelector(
   (substate) => !!substate.get('stockDataParams')
 );
 
+const selectIndividualStockData = () => createSelector(
+  selectDataDomain(),
+  (substate) => substate.get('individualStockData'),
+);
+
 export default {
   selectSearchQuery,
   selectSearchResults,
   selectShouldRenderBack,
   selectStockParams,
+  selectIndividualStockData,
 };

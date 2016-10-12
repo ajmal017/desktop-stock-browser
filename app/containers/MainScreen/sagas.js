@@ -20,15 +20,21 @@ import {
 import {
   putSearchResults,
   viewStockDataScreen,
+  fetchStockDataSuccess,
+  fetchStockDataError,
 } from './actions';
 
 function* fetchStockData({ stockSymbol, stockExch }) {
-  const googleData = yield call(request, 'GET', {}, googleLookup(stockExch, stockSymbol));
-  const yahooData = yield call(request, 'GET', {}, yahooLookup(stockSymbol));
-  const parsedGoogleData = yield call(parseGoogleData, googleData.data);
-  const parsedYahooData = yield call(parseYahooData, yahooData.data);
+  try {
+    const googleData = yield call(request, 'GET', {}, googleLookup(stockExch, stockSymbol));
+    const yahooData = yield call(request, 'GET', {}, yahooLookup(stockSymbol));
+    const parsedGoogleData = yield call(parseGoogleData, googleData.data);
+    const parsedYahooData = yield call(parseYahooData, yahooData.data);
 
-  console.log(parsedYahooData, parsedGoogleData);
+    yield put(fetchStockDataSuccess(parsedYahooData, parsedGoogleData));
+  } catch (error) {
+    yield put(fetchStockDataError(error));
+  }
 }
 
 function* fetchStockSuggesions({ payload }) {
@@ -45,6 +51,10 @@ function* viewStockData({ payload }) {
   yield put(viewStockDataScreen(payload));
   if (payload) {
     yield put(push('/stock'));
+    yield call(fetchStockData, {
+      stockSymbol: payload.symbol,
+      stockExch: payload.exchDisp,
+    });
   }
 }
 
