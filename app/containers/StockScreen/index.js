@@ -5,44 +5,81 @@ import { selectStockParams, selectIndividualStockData } from '../MainScreen/sele
 import { fetchStockData } from '../MainScreen/actions';
 import styles from './styles.css';
 
+const POSITIVE_COLOR = '#01CE67';
+const NEGATIVE_COLOR = '#F38493';
+const NEUTRAL_COLOR = 'rgba(255, 255, 255, 0.7)';
+
+// Takes in value, returns color of text associated with value
+const deduceColor = (value) => {
+  if (value > 0) return POSITIVE_COLOR;
+  if (value < 0) return NEGATIVE_COLOR;
+  return NEUTRAL_COLOR;
+};
+
+// Adds some decimals to a dollar amount
+const parseDollarAmount = (dollarAmountString) => dollarAmountString.toFixed(2);
+
+// Splits a dollar string into decimal, full amount
+const splitDollarAmount = (dollarAmountString) => dollarAmountString.split('.');
+
 class StockScreen extends React.Component {
   render() {
     if (!this.props.stockData) {
       return null;
     }
     const { stockData } = this.props;
-    const hightLightColor = stockData.google.c > 0 ? '#01CE67' : '#F38493';
+    const [fullDollarAmount, decimalDollarAmount] = splitDollarAmount(stockData.google.l);
+    const shouldRenderAfteHours = !!Number(stockData.google.ec);
     return (
       <div className={styles.stockScreenContainer}>
         <div className={styles.stockScreenContainerHeader}>
           <div className={styles.headerContainer}>
             <p className={styles.headerContainer__price}>
               <span className={styles.headerContainer__dollarSign}>$</span>
-              {stockData.google.l.split('.')[0]}
+              {fullDollarAmount}
               <span
                 className={styles.headerContainer__decimalAmount}
                 style={{
-                  color: hightLightColor,
+                  color: deduceColor(stockData.google.c),
                 }}
               >.
-                {this.props.stockData.google.l.split('.')[1]}
+                {decimalDollarAmount}
               </span>
             </p>
-            <p
-              className={styles.headerContainer__changeAmount}
-              style={{
-                color: hightLightColor,
-              }}
-            >
-              {stockData.google.c} ({stockData.google.cp}%)
-            </p>
+            {shouldRenderAfteHours ? <p
+              className={styles.headerContainer__afterHours}
+            >After Hours Price: ${stockData.google.el}</p> : null}
+            <div className={styles.headerContainer__changeContainer}>
+              <div className={styles.headerContainer__changeContainerSection}>
+                <p
+                  className={styles.headerContainer__changeAmount}
+                  style={{
+                    color: deduceColor(stockData.google.c),
+                  }}
+                >
+                  {stockData.google.c} ({stockData.google.cp}%)
+                </p>
+                <span className={styles.headerContainer__changeAmountLabel}>DAILY CHANGE</span>
+              </div>
+              <div className={styles.headerContainer__changeContainerSection}>
+                <p
+                  className={styles.headerContainer__changeAmount}
+                  style={{
+                    color: deduceColor(stockData.google.ec),
+                  }}
+                >
+                  {stockData.google.ec} ({stockData.google.ecp}%)
+                </p>
+                <span className={styles.headerContainer__changeAmountLabel}>AFTER HOURS</span>
+              </div>
+            </div>
             <div className={styles.headerContainer__metaData}>
               <div className={styles.headerContainer__metaDataContainer}>
                 <span className={styles.headerContainer__metaDataContainerLabel}>LOW</span>
                 <span
                   className={styles.headerContainer__metaDataContainerValue}
                 >
-                  ${stockData.yahoo.ranges.low.min}
+                  ${parseDollarAmount(stockData.yahoo.ranges.low.min)}
                 </span>
               </div>
               <div className={styles.headerContainer__metaDataContainer}>
@@ -50,8 +87,8 @@ class StockScreen extends React.Component {
                 <span
                   className={styles.headerContainer__metaDataContainerValue}
                 >
-                  ${((stockData.yahoo.ranges.open.min
-                    + stockData.yahoo.ranges.open.max) / 2).toFixed(2)}
+                  ${parseDollarAmount((stockData.yahoo.ranges.open.min
+                    + stockData.yahoo.ranges.open.max) / 2)}
                 </span>
               </div>
               <div className={styles.headerContainer__metaDataContainer}>
@@ -59,7 +96,7 @@ class StockScreen extends React.Component {
                 <span
                   className={styles.headerContainer__metaDataContainerValue}
                 >
-                  ${stockData.yahoo.ranges.high.max}
+                  ${parseDollarAmount(stockData.yahoo.ranges.high.max)}
                 </span>
               </div>
             </div>

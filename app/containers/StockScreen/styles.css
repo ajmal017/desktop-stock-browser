@@ -9,6 +9,7 @@
 .stockScreenContainerHeader {
   flex: 1;
   display: flex;
+  margin-top: 60px;
 }
 
 .headerContainer {
@@ -18,12 +19,33 @@
   align-items: center;
 }
 
+.headerContainer__changeContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 300px;
+  margin: 20px auto 0px auto;
+}
+
+.headerContainer__afterHours {
+  text-align: center;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.headerContainer__changeContainerSection {
+  flex: 1;
+  text-align: center;
+  margin: 0 20px;
+}
+
 .headerContainer__price {
-  font-size: 60px;
+  font-size: 80px;
   font-weight: 300;
   text-align: center;
   position: relative;
-  margin: 0;
+  margin: 0 0 -10px 0;
 }
 
 .headerContainer__dollarSign {
@@ -47,6 +69,12 @@
   text-align: center;
   margin: 0;
   font-weight: 300;
+}
+
+.headerContainer__changeAmountLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .headerContainer__metaData {

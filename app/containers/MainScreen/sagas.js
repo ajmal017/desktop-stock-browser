@@ -33,6 +33,7 @@ function* fetchStockData({ stockSymbol, stockExch }) {
 
     yield put(fetchStockDataSuccess(parsedYahooData, parsedGoogleData));
   } catch (error) {
+    console.log(error);
     yield put(fetchStockDataError(error));
   }
 }
