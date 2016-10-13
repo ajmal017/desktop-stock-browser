@@ -1,5 +1,7 @@
 const rangeMapping = {
   '1d': 4,
+  '5d': 4,
+  '1m': 1,
 };
 
 const parseStockRangeData = (range, data) => {
@@ -8,7 +10,7 @@ const parseStockRangeData = (range, data) => {
     if (index % modValue === 0) {
       return Object.assign({}, totalObject, {
         value: totalObject.value.concat(each.open),
-        time: totalObject.time.concat(each.Timestamp)
+        time: totalObject.time.concat(each.Timestamp || each.Date)
       });
     }
     return totalObject;

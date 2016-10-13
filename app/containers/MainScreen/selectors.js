@@ -33,6 +33,11 @@ const selectChartStockData = () => createSelector(
   (substate) => substate.get('chartStockData'),
 );
 
+const selectStockRange = () => createSelector(
+  selectDataDomain(),
+  (substate) => substate.get('range')
+);
+
 export default {
   selectSearchQuery,
   selectSearchResults,
@@ -40,4 +45,5 @@ export default {
   selectStockParams,
   selectChartStockData,
   selectIndividualStockData,
+  selectStockRange,
 };

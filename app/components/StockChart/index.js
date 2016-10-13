@@ -4,6 +4,8 @@ import { debounce } from '../../utils/utils';
 import { buildChart } from './initializer';
 
 const initalClientWidth = '1400';
+const shouldDestroyAndRedrawChart = (nextProps, currentProps) =>
+  nextProps.symbol !== currentProps.symbol || nextProps.range !== currentProps.range;
 
 class StockChart extends React.Component {
   constructor() {
@@ -24,10 +26,9 @@ class StockChart extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data
-    && nextProps.symbol !== this.props.symbol) {
+    if (nextProps.data && shouldDestroyAndRedrawChart(nextProps, this.props)) {
       this.chart.destroy();
-      this.chart = buildChart(nextProps.data, this.chartElement);
+      this.chart = buildChart(nextProps.data, this.chartElement, nextProps.range);
     }
   }
 
@@ -58,7 +59,6 @@ class StockChart extends React.Component {
 }
 
 StockChart.propTypes = {
-  symbol: React.PropTypes.string,
   data: React.PropTypes.object,
 };
 

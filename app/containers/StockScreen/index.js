@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import StockChart from '../../components/StockChart';
-import { selectStockParams, selectIndividualStockData, selectChartStockData } from '../MainScreen/selectors';
+import { selectStockParams, selectIndividualStockData, selectChartStockData, selectStockRange } from '../MainScreen/selectors';
 import { fetchStockData, selectNewRange } from '../MainScreen/actions';
 import styles from './styles.css';
 import { deduceColor, splitDollarAmount, parseDollarAmount } from './utils';
@@ -22,7 +22,7 @@ class StockScreen extends React.Component {
     if (!this.props.stockData) {
       return null;
     }
-    const { stockData } = this.props;
+    const { stockData, stockRange } = this.props;
     const [fullDollarAmount, decimalDollarAmount] = splitDollarAmount(stockData.google.l);
     const shouldRenderAfteHours = !!Number(stockData.google.ec);
     return (
@@ -101,6 +101,7 @@ class StockScreen extends React.Component {
         <div className={styles.stockScreenContainerChart}>
           <StockChart
             data={this.props.chartData}
+            range={this.props.stockRange}
             symbol={stockData.google.t}
           />
         </div>
@@ -110,6 +111,9 @@ class StockScreen extends React.Component {
               className={styles.rangeSelector}
               onClick={() => this.props.selectNewRange(each)}
               key={each}
+              style={{
+                opacity: stockRange === each ? 1 : '',
+              }}
             >
               {each}
             </button>)}
@@ -129,6 +133,10 @@ StockScreen.propTypes = {
     React.PropTypes.bool,
   ]),
   selectNewRange: React.PropTypes.func,
+  stockRange: React.PropTypes.oneOfType([
+    React.PropTypes.string,
+    React.PropTypes.bool,
+  ]),
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -139,6 +147,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = createStructuredSelector({
   stockParams: selectStockParams(),
   stockData: selectIndividualStockData(),
+  stockRange: selectStockRange(),
   chartData: selectChartStockData(),
 });
 

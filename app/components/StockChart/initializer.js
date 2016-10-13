@@ -3,10 +3,13 @@ import moment from 'moment';
 
 const SCALE_STEPS = 5;
 const formatMapping = {
-  '1d': 'hh:mma'
+  '1d': 'hh:mma',
+  '5d': 'DD',
 };
 
-const buildChart = ({ value, time }, chartElement) => new Chart(chartElement, {
+const is = (checked, ...elementsToCompareTo) => elementsToCompareTo.indexOf(checked) !== -1;
+
+const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(chartElement, {
   type: 'line',
   data: {
     labels: time,
@@ -47,7 +50,13 @@ const buildChart = ({ value, time }, chartElement) => new Chart(chartElement, {
       xAxes: [{
         type: 'time',
         time: {
-          parser: (data) => moment.unix(data),
+          parser: (data) => {
+            if (is(range, '1d', '3d')) {
+              return moment.unix(data);
+            }
+            // TODO: FIX THIS SHIT
+            return moment(`${data}`);
+          },
         },
         ticks: {
           callback: (dataValue, index) => {
@@ -67,7 +76,7 @@ const buildChart = ({ value, time }, chartElement) => new Chart(chartElement, {
       titleFontSize: 14,
       callbacks: {
         label: (data) => `$${data.yLabel.toFixed(2)}`,
-        title: (element) => moment.unix(element[0].xLabel).format(formatMapping['1d'])
+        title: (element) => moment.unix(element[0].xLabel).format(formatMapping[range])
       }
     }
   }
