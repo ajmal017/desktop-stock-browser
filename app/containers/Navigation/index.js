@@ -25,9 +25,7 @@ class Navigation extends React.Component {
   }
 
   componentDidMount() {
-    document
-      .body
-      .addEventListener('click', this.handleClick);
+    document.body.addEventListener('click', this.handleClick);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,9 +35,7 @@ class Navigation extends React.Component {
   }
 
   componentWillUnmount() {
-    document
-      .body
-      .removeEventListener('click', this.handleClick);
+    document.body.removeEventListener('click', this.handleClick);
   }
 
   handleClick(e) {

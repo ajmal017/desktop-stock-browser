@@ -20,14 +20,12 @@ class StockChart extends React.Component {
 
   componentDidMount() {
     this.chartElement = document.getElementById('stockChartElement');
-    this.chartContainer = document.getElementById('stockChartElementContainer');
     this.chart = buildChart(this.props.data, this.chartElement);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data
-    && nextProps.symbol
-    !== this.props.symbol) {
+    && nextProps.symbol !== this.props.symbol) {
       this.chart.destroy();
       this.chart = buildChart(nextProps.data, this.chartElement);
     }
@@ -44,11 +42,9 @@ class StockChart extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div
         className={styles.stockChart}
-        id="stockChartElementContainer"
       >
         <canvas
           id="stockChartElement"
