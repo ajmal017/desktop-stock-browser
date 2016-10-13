@@ -101,6 +101,12 @@
 }
 
 .stockScreenContainerChart {
-  flex: 1.5;
+  flex: 1;
   display: flex;
+}
+
+.stockScreenContainerButtons {
+  margin: 0px 10px 10px 10px;
+  display: flex;
+  justify-content: center;
 }

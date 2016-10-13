@@ -12,10 +12,10 @@ const buildChart = ({ value, time }, chartElement) => new Chart(chartElement, {
     labels: time,
     datasets: [
       {
-        fill: false,
         lineTension: 0,
+        fill: true,
+        backgroundColor: "rgba(255, 255, 255, 1)",
         cubicInterpolationMode: 'default',
-        backgroundColor: "rgba(255, 255, 255, 0.7)",
         borderColor: "white",
         borderCapStyle: 'butt',
         borderDash: [],
