@@ -4,7 +4,12 @@ import moment from 'moment';
 const SCALE_STEPS = 5;
 const formatMapping = {
   '1d': 'hh:mma',
-  '5d': 'DD',
+  '5d': 'ddd, MMM DD h:ssA',
+  '1m': 'ddd, MMM DD',
+  '3m': 'ddd, MMM DD',
+  '1y': 'MMM DD, YYYY',
+  '5y': 'MMM DD, YYYY',
+  my: 'MMM DD, YYYY',
 };
 
 const is = (checked, ...elementsToCompareTo) => elementsToCompareTo.indexOf(checked) !== -1;
@@ -51,10 +56,9 @@ const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(ch
         type: 'time',
         time: {
           parser: (data) => {
-            if (is(range, '1d', '3d')) {
+            if (is(range, '1d', '5d')) {
               return moment.unix(data);
             }
-            // TODO: FIX THIS SHIT
             return moment(`${data}`);
           },
         },
@@ -76,7 +80,13 @@ const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(ch
       titleFontSize: 14,
       callbacks: {
         label: (data) => `$${data.yLabel.toFixed(2)}`,
-        title: (element) => moment.unix(element[0].xLabel).format(formatMapping[range])
+        title: (element) => {
+          const text = element[0].xLabel;
+          if (is(range, '1d', '5d')) {
+            return moment.unix(text).format(formatMapping[range]);
+          }
+          return moment(`${text}`).format(formatMapping[range]);
+        }
       }
     }
   }

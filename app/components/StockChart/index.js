@@ -50,7 +50,7 @@ class StockChart extends React.Component {
         <canvas
           id="stockChartElement"
           className={styles.stockChart__canvas}
-          height="400"
+          height="500"
           width={this.state.currentContainerWidth}
         />
       </div>

@@ -113,6 +113,7 @@ class StockScreen extends React.Component {
               key={each}
               style={{
                 opacity: stockRange === each ? 1 : '',
+                borderBottom: stockRange === each ? '2px solid white' : '',
               }}
             >
               {each}
