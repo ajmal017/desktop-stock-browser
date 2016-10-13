@@ -1,5 +1,5 @@
 const rangeMapping = {
-  '1d': 5,
+  '1d': 4,
 };
 
 const parseStockRangeData = (range, data) => {
