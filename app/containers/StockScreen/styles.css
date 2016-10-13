@@ -101,12 +101,21 @@
 }
 
 .stockScreenContainerChart {
-  flex: 1;
+  flex: 1.5;
   display: flex;
 }
 
 .stockScreenContainerButtons {
-  margin: 0px 10px 10px 10px;
+  background-color: #262931;
   display: flex;
+  min-height: 40px;
   justify-content: center;
+  z-index: 2;
+}
+
+.rangeSelector {
+  text-transform: uppercase;
+  font-family: 'DIN';
+  font-weight: 300;
+  margin: 0 10px;
 }

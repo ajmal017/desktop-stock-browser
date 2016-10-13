@@ -6,6 +6,7 @@ import {
   CHANGE_SEARCH_QUERY,
   PUT_SEARCH_RESULTS,
   VIEW_STOCK_DATA_SCREEN,
+  SELECT_NEW_RANGE,
 } from './constants';
 import {
   parseStockRangeData,
@@ -46,6 +47,8 @@ export default function dataFetcherReducer(state = initalState, action) {
         .set('searchResults', fromJS(action.payload));
     case VIEW_STOCK_DATA_SCREEN:
       return state.set('stockDataParams', action.payload);
+    case SELECT_NEW_RANGE:
+      return state.set('range', action.payload);
     default:
       return state;
   }

@@ -3,9 +3,19 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import StockChart from '../../components/StockChart';
 import { selectStockParams, selectIndividualStockData, selectChartStockData } from '../MainScreen/selectors';
-import { fetchStockData } from '../MainScreen/actions';
+import { fetchStockData, selectNewRange } from '../MainScreen/actions';
 import styles from './styles.css';
 import { deduceColor, splitDollarAmount, parseDollarAmount } from './utils';
+
+const rangeButtons = [
+  '1d',
+  '5d',
+  '1m',
+  '3m',
+  '1y',
+  '5y',
+  'my'
+];
 
 class StockScreen extends React.Component {
   render() {
@@ -95,7 +105,14 @@ class StockScreen extends React.Component {
           />
         </div>
         <div className={styles.stockScreenContainerButtons}>
-          <button>1Y</button>
+          {rangeButtons.map((each) =>
+            <button
+              className={styles.rangeSelector}
+              onClick={() => this.props.selectNewRange(each)}
+              key={each}
+            >
+              {each}
+            </button>)}
         </div>
       </div>
     );
@@ -111,10 +128,12 @@ StockScreen.propTypes = {
     React.PropTypes.object,
     React.PropTypes.bool,
   ]),
+  selectNewRange: React.PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => ({
   onLoadStockData: (stockData) => dispatch(fetchStockData(stockData.symbol, stockData.exchDisp)),
+  selectNewRange: (newRange) => dispatch(selectNewRange(newRange)),
 });
 
 const mapStateToProps = createStructuredSelector({

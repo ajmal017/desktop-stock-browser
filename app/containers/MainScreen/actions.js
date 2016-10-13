@@ -6,7 +6,15 @@ import {
   PUT_SEARCH_RESULTS,
   VIEW_STOCK_DATA,
   VIEW_STOCK_DATA_SCREEN,
+  SELECT_NEW_RANGE,
 } from './constants';
+
+function selectNewRange(newRange) {
+  return {
+    type: SELECT_NEW_RANGE,
+    payload: newRange,
+  };
+}
 
 function viewStockDataScreen(state) {
   return {
@@ -77,5 +85,6 @@ export default {
   putSearchResults,
   viewStockData,
   viewStockDataScreen,
+  selectNewRange,
 };
 

@@ -1,10 +1,11 @@
-import { take, fork, call, put } from 'redux-saga/effects';
+import { take, fork, call, put, select } from 'redux-saga/effects';
 import { delay, takeLatest } from 'redux-saga';
 import { push } from 'react-router-redux';
 import {
    FETCH_STOCK_DATA,
    CHANGE_SEARCH_QUERY,
    VIEW_STOCK_DATA,
+   SELECT_NEW_RANGE,
 } from './constants';
 import { request } from '../../utils/request';
 import {
@@ -23,11 +24,20 @@ import {
   fetchStockDataSuccess,
   fetchStockDataError,
 } from './actions';
+import { selectStockParams } from './selectors';
 
-function* fetchStockData({ stockSymbol, stockExch }) {
+function* fetchStockData(params) {
+  const fetchData = yield select(selectStockParams());
+  const { symbol, exchDisp } = fetchData;
+  let range = '1d';
+
+  if (params) {
+    range = params.payload;
+  }
+
   try {
-    const googleData = yield call(request, 'GET', {}, googleLookup(stockExch, stockSymbol));
-    const yahooData = yield call(request, 'GET', {}, yahooLookup(stockSymbol));
+    const googleData = yield call(request, 'GET', {}, googleLookup(exchDisp, symbol));
+    const yahooData = yield call(request, 'GET', {}, yahooLookup(symbol, range));
     const parsedGoogleData = yield call(parseGoogleData, googleData.data);
     const parsedYahooData = yield call(parseYahooData, yahooData.data);
 
@@ -52,12 +62,10 @@ function* viewStockData({ payload }) {
   yield put(viewStockDataScreen(payload));
   if (payload) {
     yield put(push('/stock'));
-    yield call(fetchStockData, {
-      stockSymbol: payload.symbol,
-      stockExch: payload.exchDisp,
-    });
+    yield call(fetchStockData);
   }
 }
+
 
 function* stockDataLoop() {
   while (true) {
@@ -74,10 +82,15 @@ function* viewStockDataLoop() {
   yield takeLatest(VIEW_STOCK_DATA, viewStockData);
 }
 
+function* changeFetchRange() {
+  yield takeLatest(SELECT_NEW_RANGE, fetchStockData);
+}
+
 function* rootMainWatcher() {
   yield fork(stockDataLoop);
   yield fork(searchQueryLoop);
   yield fork(viewStockDataLoop);
+  yield fork(changeFetchRange);
 }
 
 export default rootMainWatcher;
