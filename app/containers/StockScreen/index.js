@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import StockChart from '../../components/StockChart';
+import styles from './styles.css';
 import { selectStockParams, selectIndividualStockData, selectChartStockData, selectStockRange } from '../MainScreen/selectors';
 import { fetchStockData, selectNewRange } from '../MainScreen/actions';
-import styles from './styles.css';
+import { ChangeContainer, RangeContainer, BigDollar, AfterHoursChangesContainer } from '../../components/StockScreen';
 import { deduceColor, splitDollarAmount, parseDollarAmount } from './utils';
 
 const rangeButtons = [
@@ -24,77 +25,50 @@ class StockScreen extends React.Component {
     }
     const { stockData, stockRange } = this.props;
     const [fullDollarAmount, decimalDollarAmount] = splitDollarAmount(stockData.google.l);
-    const shouldRenderAfteHours = !!Number(stockData.google.ec);
+    const shouldRenderAfterHours = !!Number(stockData.google.ec);
     return (
       <div className={styles.stockScreenContainer}>
         <div className={styles.stockScreenContainerHeader}>
           <div className={styles.headerContainer}>
-            <p className={styles.headerContainer__price}>
-              <span className={styles.headerContainer__dollarSign}>$</span>
-              {fullDollarAmount}
-              <span
-                className={styles.headerContainer__decimalAmount}
-                style={{
-                  color: deduceColor(stockData.google.c),
-                }}
-              >.
-                {decimalDollarAmount}
-              </span>
-            </p>
-            {shouldRenderAfteHours ? <p
-              className={styles.headerContainer__afterHours}
-            >After Hours Price: ${stockData.google.el}</p> : null}
+            <BigDollar
+              fullValue={fullDollarAmount}
+              decimalValue={decimalDollarAmount}
+              decimalColor={deduceColor(stockData.google.c)}
+            />
+            <AfterHoursChangesContainer
+              value={stockData.google.el}
+              shouldRender={shouldRenderAfterHours}
+            />
             <div className={styles.headerContainer__changeContainer}>
-              <div className={styles.headerContainer__changeContainerSection}>
-                <p
-                  className={styles.headerContainer__changeAmount}
-                  style={{
-                    color: deduceColor(stockData.google.c),
-                  }}
-                >
-                  {stockData.google.c} ({stockData.google.cp}%)
-                </p>
-                <span className={styles.headerContainer__changeAmountLabel}>DAILY CHANGE</span>
-              </div>
-              {shouldRenderAfteHours ?
-                <div className={styles.headerContainer__changeContainerSection}>
-                  <p
-                    className={styles.headerContainer__changeAmount}
-                    style={{
-                      color: deduceColor(stockData.google.ec),
-                    }}
-                  >
-                    {stockData.google.ec} ({stockData.google.ecp}%)
-                  </p>
-                  <span className={styles.headerContainer__changeAmountLabel}>AFTER HOURS</span>
-                </div> : null}
+              <ChangeContainer
+                color={deduceColor(stockData.google.c)}
+                value={stockData.google.c}
+                percent={stockData.google.cp}
+                label="DAILY CHANGE"
+                shouldRender
+              />
+              <ChangeContainer
+                color={deduceColor(stockData.google.ec)}
+                value={stockData.google.ec}
+                percent={stockData.google.ecp}
+                label="AFTER HOURS"
+                shouldRender={shouldRenderAfterHours}
+              />
             </div>
             <div className={styles.headerContainer__metaData}>
-              <div className={styles.headerContainer__metaDataContainer}>
-                <span className={styles.headerContainer__metaDataContainerLabel}>LOW</span>
-                <span
-                  className={styles.headerContainer__metaDataContainerValue}
-                >
-                  ${parseDollarAmount(stockData.yahoo.ranges.low.min)}
-                </span>
-              </div>
-              <div className={styles.headerContainer__metaDataContainer}>
-                <span className={styles.headerContainer__metaDataContainerLabel}>OPEN</span>
-                <span
-                  className={styles.headerContainer__metaDataContainerValue}
-                >
-                  ${parseDollarAmount((stockData.yahoo.ranges.open.min
+              <RangeContainer
+                value={parseDollarAmount(stockData.yahoo.ranges.low.min)}
+                label="LOW"
+              />
+              <RangeContainer
+                value={parseDollarAmount((stockData.yahoo.ranges.open.min
                     + stockData.yahoo.ranges.open.max) / 2)}
-                </span>
-              </div>
-              <div className={styles.headerContainer__metaDataContainer}>
-                <span className={styles.headerContainer__metaDataContainerLabel}>HIGH</span>
-                <span
-                  className={styles.headerContainer__metaDataContainerValue}
-                >
-                  ${parseDollarAmount(stockData.yahoo.ranges.high.max)}
-                </span>
-              </div>
+                label="OPEN"
+              />
+              <RangeContainer
+                value={parseDollarAmount(stockData.yahoo.ranges.high.max)}
+                label="HIGH"
+              />
             </div>
           </div>
         </div>
