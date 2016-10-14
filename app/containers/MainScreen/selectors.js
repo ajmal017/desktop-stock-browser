@@ -25,7 +25,7 @@ const selectShouldRenderBack = () => createSelector(
 
 const selectIndividualStockData = () => createSelector(
   selectDataDomain(),
-  (substate) => substate.get('individualStockData'),
+  (substate) => substate.get('individualStockData').toJS()
 );
 
 const selectChartStockData = () => createSelector(

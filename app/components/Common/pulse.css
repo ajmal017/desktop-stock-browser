@@ -16,7 +16,7 @@
   animation: ping 3s ease infinite;
   z-index: 2;
   position: absolute;
-  transform: translate(-38%, -38%);
+  transform: translate(-36.5%, -36%);
 }
 
 @keyframes ping {

@@ -19,7 +19,7 @@ class StockScreen extends React.Component {
   }
 
   render() {
-    if (!this.props.stockData) {
+    if (!Object.keys(this.props.stockData).length) {
       return null;
     }
     const { stockData, stockRange } = this.props;
@@ -29,6 +29,7 @@ class StockScreen extends React.Component {
       <div className={styles.stockScreenContainer}>
         <div className={styles.stockScreenContainerHeader}>
           <div className={styles.headerContainer}>
+            <span className={styles.headerContainer_ltt}>Since {stockData.google.lt}</span>
             <BigDollar
               fullValue={fullDollarAmount}
               decimalValue={decimalDollarAmount}

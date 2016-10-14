@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 
 export const START_STOCK_PULL = 'app/StockScreen/START_STOCK_PULL';
-const END_STOCK_PULL = 'app/StockScreen/END_STOCK_PULL';
+export const END_STOCK_PULL = 'app/StockScreen/END_STOCK_PULL';
 
 export function startStockPull(symbol, exchange) {
   return {

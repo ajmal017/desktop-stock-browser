@@ -54,3 +54,10 @@
   margin: 0 10px;
   opacity: 0.2;
 }
+
+.headerContainer_ltt {
+  display: flex;
+  font-size: 12px;
+  font-weight: 300;
+  justify-content: center;
+}

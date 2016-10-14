@@ -13,7 +13,14 @@ export const SELECT_NEW_RANGE = 'SELECT_NEW_RANGE';
 export const FETCH_STOCK_DATA = 'FETCH_STOCK_DATA';
 export const FETCH_STOCK_DATA_SUCCESS = 'FETCH_STOCK_DATA_SUCCESS';
 export const FETCH_STOCK_DATA_ERROR = 'FETCH_STOCK_DATA_ERROR';
+export const FETCH_UPDATED_DATA = 'FETCH_UPDATED_DATA';
 
+export function fetchUpdatedDataSuccess(data) {
+  return {
+    type: FETCH_UPDATED_DATA,
+    payload: data,
+  };
+}
 
 export function selectNewRange(newRange) {
   return {
@@ -89,7 +96,7 @@ const initalState = fromJS({
   fetchErrors: false,
   isFetching: false,
   stockDataParams: false,
-  individualStockData: false,
+  individualStockData: {},
   chartStockData: false,
   range: false,
 });
@@ -105,7 +112,7 @@ export default function dataFetcherReducer(state = initalState, action) {
     case FETCH_STOCK_DATA_SUCCESS:
       return state
         .set('isFetching', false)
-        .set('individualStockData', action.payload.individual)
+        .set('individualStockData', fromJS(action.payload.individual))
         .set('chartStockData', parseStockRangeData(action.payload.range, action.payload.chart))
         .set('range', action.payload.range);
     case CHANGE_SEARCH_QUERY:
@@ -118,6 +125,8 @@ export default function dataFetcherReducer(state = initalState, action) {
         .set('searchResults', fromJS(action.payload));
     case VIEW_STOCK_DATA_SCREEN:
       return state.set('stockDataParams', action.payload);
+    case FETCH_UPDATED_DATA:
+      return state.setIn(['individualStockData', 'google'], action.payload);
     default:
       return state;
   }
