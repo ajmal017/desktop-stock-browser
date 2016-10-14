@@ -4,16 +4,20 @@ import { createStructuredSelector } from 'reselect';
 import { push } from 'react-router-redux';
 import styles from './styles.css';
 import AppControls from '../../components/AppControls';
+import { Pulse } from '../../components/Common';
 import {
   changeSearchQuery,
   viewStockData,
-} from '../../containers/MainScreen/actions';
+} from '../../containers/MainScreen/redux';
 import {
   selectSearchQuery,
   selectSearchResults,
   selectStockParams,
   selectShouldRenderBack,
 } from '../MainScreen/selectors';
+import {
+  selectIsFetching,
+} from '../StockScreen/selectors';
 
 class Navigation extends React.Component {
   constructor() {
@@ -97,6 +101,9 @@ class Navigation extends React.Component {
         <p
           className={styles.appNavigation__containerBranding}
         >
+          <Pulse
+            isActive={this.props.isPullingStockData}
+          />
           <span className={styles.appNavigation__containerBrandingExchDisp}>
             {routingDataState.exchDisp}
           </span>
@@ -178,6 +185,7 @@ Navigation.propTypes = {
   ]),
   returnToHome: React.PropTypes.func,
   shouldRenderBack: React.PropTypes.bool,
+  isPullingStockData: React.PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -185,6 +193,7 @@ const mapStateToProps = createStructuredSelector({
   searchResults: selectSearchResults(),
   stockViewParams: selectStockParams(),
   shouldRenderBack: selectShouldRenderBack(),
+  isPullingStockData: selectIsFetching(),
 });
 
 function mapDispatchToProps(dispatch) {

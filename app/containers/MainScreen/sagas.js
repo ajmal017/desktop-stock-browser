@@ -1,12 +1,6 @@
 import { take, fork, call, put, select } from 'redux-saga/effects';
 import { delay, takeLatest } from 'redux-saga';
 import { push } from 'react-router-redux';
-import {
-   FETCH_STOCK_DATA,
-   CHANGE_SEARCH_QUERY,
-   VIEW_STOCK_DATA,
-   SELECT_NEW_RANGE,
-} from './constants';
 import { request } from '../../utils/request';
 import {
   googleLookup,
@@ -19,11 +13,15 @@ import {
   parseSymbolLookupData,
 } from '../../utils/parser';
 import {
+  FETCH_STOCK_DATA,
+  CHANGE_SEARCH_QUERY,
+  VIEW_STOCK_DATA,
+  SELECT_NEW_RANGE,
   putSearchResults,
   viewStockDataScreen,
   fetchStockDataSuccess,
   fetchStockDataError,
-} from './actions';
+} from './redux';
 import { selectStockParams } from './selectors';
 
 function* fetchStockData(params) {

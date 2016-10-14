@@ -15,8 +15,20 @@ const parseDollarAmount = (dollarAmountString) => dollarAmountString.toFixed(2);
 // Splits a dollar string into decimal, full amount
 const splitDollarAmount = (dollarAmountString) => dollarAmountString.split('.');
 
+// buttons for various ranges to be chosen
+const rangeButtons = [
+  '1d',
+  '5d',
+  '1m',
+  '3m',
+  '1y',
+  '5y',
+  'my'
+];
+
 export default {
   deduceColor,
   parseDollarAmount,
   splitDollarAmount,
+  rangeButtons,
 };

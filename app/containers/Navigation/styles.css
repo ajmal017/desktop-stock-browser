@@ -19,6 +19,7 @@
 .appNavigation__containerSection {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .appNavigation__containerBranding {

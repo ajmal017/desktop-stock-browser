@@ -27,13 +27,6 @@
   margin: 20px auto 0px auto;
 }
 
-.headerContainer__afterHours {
-  text-align: center;
-  margin: 0 0 10px 0;
-  font-size: 14px;
-  font-weight: 300;
-}
-
 .headerContainer__metaData {
   flex: 1;
   justify-content: center;

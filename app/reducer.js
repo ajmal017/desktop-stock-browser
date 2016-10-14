@@ -2,7 +2,8 @@
 import { combineReducers } from 'redux-immutable';
 import { fromJS } from 'immutable';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import dataFetcherReducer from './containers/MainScreen/reducer';
+import dataFetcherReducer from './containers/MainScreen/redux';
+import individualDataReducer from './containers/StockScreen/redux';
 
 const routeInitialState = fromJS({
   locationBeforeTransitions: null,
@@ -26,6 +27,7 @@ function routeReducer(state = routeInitialState, action) {
 const rootReducer = combineReducers({
   route: routeReducer,
   data: dataFetcherReducer,
+  stock: individualDataReducer,
 });
 
 export default rootReducer;

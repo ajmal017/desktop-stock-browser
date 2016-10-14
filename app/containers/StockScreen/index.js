@@ -4,28 +4,27 @@ import { createStructuredSelector } from 'reselect';
 import StockChart from '../../components/StockChart';
 import styles from './styles.css';
 import { selectStockParams, selectIndividualStockData, selectChartStockData, selectStockRange } from '../MainScreen/selectors';
-import { fetchStockData, selectNewRange } from '../MainScreen/actions';
+import { fetchStockData, selectNewRange } from '../MainScreen/redux';
+import { startStockPull } from './redux';
+import { selectIsFetching } from './selectors';
 import { ChangeContainer, RangeContainer, BigDollar, AfterHoursChangesContainer } from '../../components/StockScreen';
-import { deduceColor, splitDollarAmount, parseDollarAmount } from './utils';
-
-const rangeButtons = [
-  '1d',
-  '5d',
-  '1m',
-  '3m',
-  '1y',
-  '5y',
-  'my'
-];
+import { deduceColor, splitDollarAmount, parseDollarAmount, rangeButtons } from './utils';
 
 class StockScreen extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isFetchingStockData && nextProps.stockData) {
+      const { symbol, exchDisp } = nextProps.stockParams;
+      this.props.startStockPull(symbol, exchDisp);
+    }
+  }
+
   render() {
     if (!this.props.stockData) {
       return null;
     }
     const { stockData, stockRange } = this.props;
     const [fullDollarAmount, decimalDollarAmount] = splitDollarAmount(stockData.google.l);
-    const shouldRenderAfterHours = !!Number(stockData.google.ec);
+
     return (
       <div className={styles.stockScreenContainer}>
         <div className={styles.stockScreenContainerHeader}>
@@ -37,7 +36,7 @@ class StockScreen extends React.Component {
             />
             <AfterHoursChangesContainer
               value={stockData.google.el}
-              shouldRender={shouldRenderAfterHours}
+              shouldRender={!!Number(stockData.google.ec)}
             />
             <div className={styles.headerContainer__changeContainer}>
               <ChangeContainer
@@ -52,7 +51,7 @@ class StockScreen extends React.Component {
                 value={stockData.google.ec}
                 percent={stockData.google.ecp}
                 label="AFTER HOURS"
-                shouldRender={shouldRenderAfterHours}
+                shouldRender={!!Number(stockData.google.ec)}
               />
             </div>
             <div className={styles.headerContainer__metaData}>
@@ -112,11 +111,13 @@ StockScreen.propTypes = {
     React.PropTypes.string,
     React.PropTypes.bool,
   ]),
+  startStockPull: React.PropTypes.func,
 };
 
 const mapDispatchToProps = dispatch => ({
   onLoadStockData: (stockData) => dispatch(fetchStockData(stockData.symbol, stockData.exchDisp)),
   selectNewRange: (newRange) => dispatch(selectNewRange(newRange)),
+  startStockPull: (symbol, exchange) => dispatch(startStockPull(symbol, exchange)),
 });
 
 const mapStateToProps = createStructuredSelector({
@@ -124,6 +125,7 @@ const mapStateToProps = createStructuredSelector({
   stockData: selectIndividualStockData(),
   stockRange: selectStockRange(),
   chartData: selectChartStockData(),
+  isFetchingStockData: selectIsFetching(),
 });
 
 
