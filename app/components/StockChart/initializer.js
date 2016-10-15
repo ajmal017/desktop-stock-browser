@@ -1,5 +1,6 @@
 import Chart from 'chart.js'; // eslint-disable-line
 import moment from 'moment';
+import { is } from '../../utils/utils';
 
 const SCALE_STEPS = 5;
 const formatMapping = {
@@ -12,7 +13,6 @@ const formatMapping = {
   my: 'MMM DD, YYYY',
 };
 
-const is = (checked, ...elementsToCompareTo) => elementsToCompareTo.indexOf(checked) !== -1;
 
 const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(chartElement, {
   type: 'line',
@@ -53,15 +53,15 @@ const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(ch
     },
     scales: {
       xAxes: [{
-        type: 'time',
-        time: {
-          parser: (data) => {
-            if (is(range, '1d', '5d')) {
-              return moment.unix(data);
-            }
-            return moment(`${data}`);
-          },
-        },
+        // type: 'time',
+        // time: {
+        //   parser: (data) => {
+        //     if (is(range, '1d', '5d')) {
+        //       return moment.unix(data);
+        //     }
+        //     return moment(`${data}`);
+        //   },
+        // },
         ticks: {
           callback: (dataValue, index) => {
             if (index % 2 === 0) {

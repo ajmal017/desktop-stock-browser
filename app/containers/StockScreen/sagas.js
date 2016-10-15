@@ -27,6 +27,8 @@ function* bgSync(data) {
 function* stockDataPullerHandler() {
   while (true) {
     const { payload } = yield take(START_STOCK_PULL);
+    // We don't want to start fetching right away
+    yield call(delay, 2000);
     const bgSyncTask = yield fork(bgSync, payload);
 
     yield take([LOCATION_CHANGE]);

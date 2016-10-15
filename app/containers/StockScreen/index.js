@@ -9,6 +9,7 @@ import { startStockPull } from './redux';
 import { selectIsFetching } from './selectors';
 import { ChangeContainer, RangeContainer, BigDollar, AfterHoursChangesContainer } from '../../components/StockScreen';
 import { deduceColor, splitDollarAmount, parseDollarAmount, rangeButtons } from './utils';
+import { objectIsNotEmpty } from '../../utils/utils';
 
 class StockScreen extends React.Component {
   componentWillReceiveProps(nextProps) {
@@ -19,7 +20,7 @@ class StockScreen extends React.Component {
   }
 
   render() {
-    if (!Object.keys(this.props.stockData).length) {
+    if (!objectIsNotEmpty(this.props.stockData)) {
       return null;
     }
     const { stockData, stockRange } = this.props;

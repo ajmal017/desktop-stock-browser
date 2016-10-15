@@ -90,6 +90,11 @@
   background-color: rgba(0,0,0,.03);
 }
 
+.appNavigation__searchResultsItem__selected {
+  composes: appNavigation__searchResultsItem;
+  background-color: rgba(0,0,0,.03);
+}
+
 .appNavigation__searchResultsItemName {
   font-size: 14px;
   flex: 1;

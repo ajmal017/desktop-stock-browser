@@ -10,6 +10,11 @@ function debounce(fn, delay) {
   };
 }
 
+const is = (checked, ...elementsToCompareTo) => elementsToCompareTo.indexOf(checked) !== -1;
+const objectIsNotEmpty = (object) => Object.keys(object).length !== 0;
+
 export default {
   debounce,
+  is,
+  objectIsNotEmpty,
 };

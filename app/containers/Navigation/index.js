@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { push } from 'react-router-redux';
 import styles from './styles.css';
+import { is } from '../../utils/utils';
 import AppControls from '../../components/AppControls';
 import { Pulse } from '../../components/Common';
 import {
@@ -24,12 +25,16 @@ class Navigation extends React.Component {
     super();
     this.state = {
       searchResultsShown: false,
+      searchResultsSelected: -1,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.handleKeydownOnDropdown = this.handleKeydownOnDropdown.bind(this);
   }
 
   componentDidMount() {
     document.body.addEventListener('click', this.handleClick);
+    document.body.addEventListener('keydown', this.handleKeydownOnDropdown);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,6 +45,33 @@ class Navigation extends React.Component {
 
   componentWillUnmount() {
     document.body.removeEventListener('click', this.handleClick);
+    document.body.removeEventListener('keydown', this.handleKeydownOnDropdown);
+  }
+
+  handleKeydownOnDropdown(e) {
+    if (this.state.searchResultsShown && is(e.keyCode, 13, 38, 40)) {
+      switch (e.keyCode) {
+        case 40:
+          if (this.state.searchResultsSelected + 1 < this.props.searchResults.size) {
+            this.setState({
+              searchResultsSelected: this.state.searchResultsSelected + 1
+            });
+          }
+          break;
+        case 38:
+          if (this.state.searchResultsSelected - 1 >= 0) {
+            this.setState({
+              searchResultsSelected: this.state.searchResultsSelected - 1
+            });
+          }
+          break;
+        case 13:
+          this.handleSelect(this.props.searchResults.get(this.state.searchResultsSelected));
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   handleClick(e) {
@@ -50,8 +82,17 @@ class Navigation extends React.Component {
     && !this.searchResultsList.contains(e.target)) {
       this.setState({
         searchResultsShown: false,
+        searchResultsSelected: -1,
       });
     }
+  }
+
+  handleSelect(selected) {
+    this.props.viewStockData(selected.toJS());
+    this.setState({
+      searchResultsShown: false,
+      searchResultsSelected: 0,
+    });
   }
 
   renderSearchResults() {
@@ -62,16 +103,13 @@ class Navigation extends React.Component {
             className={styles.appNavigation__searchResultsList}
             ref={(searchResults) => { this.searchResultsList = searchResults; }}
           >
-            {this.props.searchResults.map((each) =>
+            {this.props.searchResults.map((each, index) =>
               <li
                 key={each.get('symbol')}
-                className={styles.appNavigation__searchResultsItem}
-                onMouseDown={() => {
-                  this.props.viewStockData(each.toJS());
-                  this.setState({
-                    searchResultsShown: false,
-                  });
-                }}
+                className={index === this.state.searchResultsSelected ?
+                  styles.appNavigation__searchResultsItem__selected
+                  : styles.appNavigation__searchResultsItem}
+                onMouseDown={() => this.handleSelect(each)}
                 ref={(thisComp) => {
                   this.searchResultsList = thisComp;
                 }}
