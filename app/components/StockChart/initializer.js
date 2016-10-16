@@ -22,7 +22,6 @@ const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(ch
       {
         lineTension: 0,
         fill: true,
-        backgroundColor: "rgba(255, 255, 255, 1)",
         cubicInterpolationMode: 'default',
         borderColor: "white",
         borderCapStyle: 'butt',
@@ -63,13 +62,8 @@ const buildChart = ({ value, time }, chartElement, range = '1d') => new Chart(ch
         //   },
         // },
         ticks: {
-          callback: (dataValue, index) => {
-            if (index % 2 === 0) {
-              return dataValue;
-            }
-            return null;
-          }
-        }
+          maxTicksLimit: 10,
+        },
       }]
     },
     tooltips: {
